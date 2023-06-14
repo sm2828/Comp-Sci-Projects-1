@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>About Me - Portfolio</title>
+  <style>
+    header {
+      background-color: #333;
+      padding: 10px;
+      color: #fff;
+    }
+
+    nav a {
+      color: #fff;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    footer .contact, footer .sitemap {
+      width: 50%;
+    }
+
+    footer .sitemap ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    footer .sitemap ul li {
+      margin-bottom: 5px;
+    }
+
+    /* Added CSS styles for the profile photo */
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+      max-height: 300px; /* Adjust the max-height as per your preference */
+      border-radius: 50%; /* Apply a circular border radius */
+    }
+
+    /* Added CSS styles for the sitemap links */
+    footer .sitemap a {
+      color: #fff; /* Change the color of the links */
+      text-decoration: none;
+    }
+
+    footer .sitemap a:hover {
+      text-decoration: underline; /* Apply an underline on hover */
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>About Me - Portfolio</h1>
+    <nav>
+      <a href="#">Home</a> |
+      <a href="#resume">Resume</a> |
+      <a href="#portfolio">Portfolio</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Welcome to My Portfolio</h2>
+    <img src="profile-photo.png">
+    
+    <section id="resume">
+      <h3>Resume</h3>
+      <!-- Place your resume content here -->
+      <a href="SMN_Resume.pdf" target="SMN_Resume.pdf">Download Resume (PDF)</a>
+    </section>
+
+    <section id="contact">
+      <h3>Contact Me</h3>
+      <form method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+        <input type="submit" value="Submit">
+      </form>
+      <div class="social-media">
+        <!-- social media links here -->
+        <a href="#" target="https://twitter.com/SM28282828">Twitter</a>
+        <a href="#" target="https://github.com/sm2828">GitHub</a>
+      </div>
+    </section>
+
+    <section id="portfolio">
+      <h3>Portfolio</h3>
+      <!-- project descriptions, code snippets, screenshots, etc. here -->
+    </section>
+  </main>
+  
+  <footer>
+    <div class="contact">
+      <h5>Contact Me</h5>
+      <p>Sean-Morgan Neville</p>
+      <p>111 Street</p>
+      <p>Birmingham, Alabama 35128</p>
+    </div>
+
+    <div class="sitemap">
+      <h5>Sitemap</h5>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#resume">Resume</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>
