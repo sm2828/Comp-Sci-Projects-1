@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>About Me - Portfolio</title>
+  <title>Portfolio</title>
   <style>
+    body {
+      background-image: url("c110d510-ef96-11ed-a794-6045bdbb7914.png");
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-attachment: fixed;
+    }
+
     header {
-      background-color: #333;
+      background-color: rgba(0, 0, 0, 0);
       padding: 10px;
-      color: #fff;
+      color: #000000;
     }
 
     nav a {
@@ -15,29 +25,40 @@
       text-decoration: none;
     }
 
+    nav a:hover {
+      text-decoration: underline;
+    }
+
     main {
       padding: 20px;
-    }
-
-    footer {
-      background-color: #333;
-      color: #fff;
-      padding: 20px;
       display: flex;
-      justify-content: space-between;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
     }
 
-    footer .contact, footer .sitemap {
-      width: 50%;
+    .panel {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      margin: 20px;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(178, 191, 174, 0.3);
+      cursor: pointer;
     }
 
-    footer .sitemap ul {
-      list-style-type: none;
-      padding-left: 0;
+    .panel:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
     }
 
-    footer .sitemap ul li {
-      margin-bottom: 5px;
+    .panel h3 {
+      margin-top: 0;
+    }
+
+    .panel p {
+      margin-bottom: 10px;
     }
 
     /* Added CSS styles for the profile photo */
@@ -45,82 +66,162 @@
       max-width: 100%;
       height: auto;
       margin-bottom: 20px;
-      max-height: 300px; /* Adjust the max-height as per your preference */
-      border-radius: 50%; /* Apply a circular border radius */
+      max-height: 400px;
+      /* Adjust the max-height as per your preference */
+      border-radius: 10%;
+      /* Apply a circular border radius */
     }
 
-    /* Added CSS styles for the sitemap links */
-    footer .sitemap a {
-      color: #fff; /* Change the color of the links */
+    /* Added CSS styles for the scrolling banner */
+    .scrolling-banner {
+      background-color: rgba(0, 0, 0, 1);
+      color: #fff;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .scrolling-banner a {
+      color: #fff;
       text-decoration: none;
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
     }
 
-    footer .sitemap a:hover {
-      text-decoration: underline; /* Apply an underline on hover */
+    .scrolling-banner img {
+      width: 24px;
+      height: 24px;
+      margin-right: 5px;
+    }
+
+    #message {
+      resize: none;
+    }
+
+    /* Added CSS styles for the gallery */
+    .gallery {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .gallery img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .wiggle-animation {
+      animation: wiggle 0.2s ease-in-out infinite;
+    }
+
+    @keyframes wiggle {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
     }
   </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var panel = document.getElementById("portfolio");
+      var gallery = document.getElementById("gallery");
+
+      panel.addEventListener("click", function () {
+        gallery.style.display = (gallery.style.display === "block") ? "none" : "block";
+        panel.classList.remove("wiggle-animation");
+      });
+
+      setInterval(function () {
+        if (gallery.style.display !== "block") {
+          panel.classList.add("wiggle-animation");
+          setTimeout(function () {
+            panel.classList.remove("wiggle-animation");
+          }, 1000); // Adjust the duration here (in milliseconds)
+        }
+      }, 6000); // Adjust the interval here (in milliseconds)
+    });
+  </script>
 </head>
 
 <body>
-  <header>
-    <h1>About Me - Portfolio</h1>
-    <nav>
-      <a href="#">Home</a> |
-      <a href="#resume">Resume</a> |
-      <a href="#portfolio">Portfolio</a>
-    </nav>
+  <header style="text-align: center;">
+    <h1>Sean Neville</h1>
   </header>
 
   <main>
-    <h2>Welcome to My Portfolio</h2>
-    <img src="profile-photo.png">
-    
-    <section id="resume">
-      <h3>Resume</h3>
-      <!-- Place your resume content here -->
-      <a href="SMN_Resume.pdf" target="SMN_Resume.pdf">Download Resume (PDF)</a>
-    </section>
+    <div class="panel">
+      <img src="profile-photo.png">
+    </div>
 
-    <section id="contact">
-      <h3>Contact Me</h3>
-      <form method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" required></textarea>
-        <input type="submit" value="Submit">
-      </form>
-      <div class="social-media">
-        <!-- social media links here -->
-        <a href="#" target="https://twitter.com/SM28282828">Twitter</a>
-        <a href="#" target="https://github.com/sm2828">GitHub</a>
-      </div>
-    </section>
+    <div class="panel">
+      <section id="resume">
+        <h3>Resume</h3>
+        <!-- Place your resume content here -->
+        <a href="SMN_Resume.pdf" target="_blank"><img src="icons8-resume-100.png" alt="Resume"></a>
+      </section>
+    </div>
 
-    <section id="portfolio">
-      <h3>Portfolio</h3>
-      <!-- project descriptions, code snippets, screenshots, etc. here -->
-    </section>
+    <div class="panel">
+      <section id="social">
+        <h3>Socials</h3>
+        <a href="https://twitter.com/SM28282828" target="_blank"><img src="icons8-twitter-96.png" alt="Twitter"></a>
+        <a href="https://github.com/sm2828" target="_blank"><img src="icons8-github-96.png" alt="GitHub"></a>
+        <a href="https://www.linkedin.com/in/sean-morgan-neville/" target="_blank"><img src="icons8-linkedin-96.png"
+            alt="LinkedIn"></a>
+      </section>
+    </div>
+
+    <div class="panel">
+      <section id="contact">
+        <h3>Contact Me</h3>
+        <form method="POST">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" required></textarea>
+          <input type="submit" value="Submit">
+        </form>
+      </section>
+    </div>
+
+    <div class="panel" id="portfolio">
+      <section>
+        <h3>Portfolio</h3>
+        <!-- project descriptions, code snippets, screenshots, etc. here -->
+        <div class="gallery" id="gallery">
+          <video controls loop autoplay muted style="width: 400px; height: 300px; pointer-events: none;">
+            <source src="ScreenRecording.mov" type="video/mp4">
+          </video>
+          <img src="60f14daa-ef95-11ed-8beb-6045bdbb7914.png">
+          <img src="5e7f1708-f0ff-11ed-b4d7-b6c4391c4ec6.png">
+          <img src="b7a7be7a-eebb-11ed-b805-000d3ae42206.png">
+          <img src="5baa2dba-ee93-11ed-b163-000d3a7da751.png">
+        </div>
+
   </main>
-  
-  <footer>
-    <div class="contact">
-      <h5>Contact Me</h5>
-      <p>Sean-Morgan Neville</p>
-      <p>111 Street</p>
-      <p>Birmingham, Alabama 35128</p>
-    </div>
 
-    <div class="sitemap">
-      <h5>Sitemap</h5>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#resume">Resume</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-      </ul>
-    </div>
-  </footer>
+  <div class="scrolling-banner">
+    <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+      Contact: seannev33@gmail.com
+      | Birmingham, Alabama
+    </marquee>
+  </div>
 </body>
+
 </html>
