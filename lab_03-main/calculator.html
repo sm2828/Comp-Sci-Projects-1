@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Calculator</title>
+  <style>
+    /* CSS styles omitted for brevity */
+  </style>
+  <script>
+    function add() {
+      var num1 = parseFloat(document.getElementById("num1").value);
+      var num2 = parseFloat(document.getElementById("num2").value);
+      var result = num1 + num2;
+      document.getElementById("result").innerHTML = "Result: " + result;
+    }
+
+    function subtract() {
+      var num1 = parseFloat(document.getElementById("num1").value);
+      var num2 = parseFloat(document.getElementById("num2").value);
+      var result = num1 - num2;
+      document.getElementById("result").innerHTML = "Result: " + result;
+    }
+
+    function multiply() {
+      var num1 = parseFloat(document.getElementById("num1").value);
+      var num2 = parseFloat(document.getElementById("num2").value);
+      var result = num1 * num2;
+      document.getElementById("result").innerHTML = "Result: " + result;
+    }
+
+    function divide() {
+      var num1 = parseFloat(document.getElementById("num1").value);
+      var num2 = parseFloat(document.getElementById("num2").value);
+      var result = num1 / num2;
+      document.getElementById("result").innerHTML = "Result: " + result;
+    }
+
+    function squareRoot() {
+      var num = parseFloat(document.getElementById("num").value);
+      var result = Math.sqrt(num);
+      document.getElementById("result").innerHTML = "Square Root: " + result;
+    }
+
+    function sin() {
+      var num = parseFloat(document.getElementById("num").value);
+      var result = Math.sin(num);
+      document.getElementById("result").innerHTML = "Sin: " + result;
+    }
+
+    function cos() {
+      var num = parseFloat(document.getElementById("num").value);
+      var result = Math.cos(num);
+      document.getElementById("result").innerHTML = "Cos: " + result;
+    }
+
+    function tan() {
+      var num = parseFloat(document.getElementById("num").value);
+      var result = Math.tan(num);
+      document.getElementById("result").innerHTML = "Tan: " + result;
+    }
+
+    function power() {
+      var num = parseFloat(document.getElementById("num").value);
+      var exponent = parseFloat(document.getElementById("exponent").value);
+      var result = Math.pow(num, exponent);
+      document.getElementById("result").innerHTML = "Power: " + result;
+    }
+  </script>
+</head>
+
+<body>
+  <header style="text-align: center;">
+    <h1>Calculator</h1>
+  </header>
+
+  <main>
+    <!-- Rest of the HTML code omitted for brevity -->
+
+    <div class="panel">
+      <section id="calculator">
+        <h3>Basic Calculator</h3>
+        <input type="text" id="num1" placeholder="Enter number 1">
+        <input type="text" id="num2" placeholder="Enter number 2">
+        <button onclick="add()">Add</button>
+        <button onclick="subtract()">Subtract</button>
+        <button onclick="multiply()">Multiply</button>
+        <button onclick="divide()">Divide</button>
+        <p id="result"></p>
+      </section>
+    </div>
+
+    <div class="panel">
+      <section id="scientific-calculator">
+        <h3>Scientific Calculator</h3>
+        <input type="text" id="num" placeholder="Enter a number">
+        <button onclick="squareRoot()">Square Root</button>
+        <button onclick="sin()">Sin</button>
+        <button onclick="cos()">Cos</button>
+        <button onclick="tan()">Tan</button>
+        <input type="text" id="exponent" placeholder="Enter the exponent">
+        <button onclick="power()">Power</button>
+        <p id="result"></p>
+      </section>
+    </div>
+  </main>
+
+  <div class="scrolling-banner">
+    <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+      Contact: seannev33@gmail.com
+      | Birmingham, Alabama
+    </marquee>
+  </div>
+</body>
+
+</html>
