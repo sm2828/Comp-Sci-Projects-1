@@ -6,6 +6,10 @@ url = "https://michaelgathara.com/api/python-challenge"
 response = requests.get(url)
 challenges = response.json()
 
+# Add your name and Blazer ID at the top
+print("\nName: Sean-Morgan Neville")
+print("Blazer ID: seannev\n")
+
 # Solve the problems and print the answers
 for challenge in challenges:
     problem_id = challenge['id']
@@ -41,6 +45,3 @@ for challenge in challenges:
     else:
         print(f"Invalid problem #{problem_id}: Invalid format")
 
-# Add your name and Blazer ID at the top
-print("\nName: Sean-Morgan Neville")
-print("Blazer ID: seannev")
