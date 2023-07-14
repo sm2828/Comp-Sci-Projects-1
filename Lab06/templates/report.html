@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Report</h1>
+<p>Username: {{ username }}</p>
+<p>Password: {{ password }}</p>
+<p>
+    {% if valid %}
+        Your password passed all requirements.
+    {% else %}
+        Your password did not meet all the requirements.
+    {% endif %}
+</p>
+{% endblock %}
