@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Coffee Shop!</h1>
+    <a href="{{ url_for('view_menu') }}" class="menu-button">View Menu</a>
+    <br>
+    <a href="{{ url_for('sign_up') }}" class="signup-button">Sign Up</a>
+    <a href="{{ url_for('sign_in') }}" class="signin-button">Sign In</a>
+</body>
+</html>
