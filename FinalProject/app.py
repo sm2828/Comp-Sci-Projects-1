@@ -3,6 +3,7 @@ import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import hashlib
 import database
+import datetime
 from database import is_valid_user, create_user, get_menu_items, update_menu_item_quantity, add_menu_item
 
 DATABASE_NAME = 'coffee_shop.db'
@@ -13,9 +14,6 @@ import secrets
 
 # Generate a secure secret key with 32 bytes
 secret_key = secrets.token_hex(32)
-
-# Print the secret key
-print("secret key",secret_key)
 
 # Fetch the menu items and their initial quantities from the database
 menu = get_menu_items()
@@ -227,24 +225,74 @@ def manager_interface():
 
     return render_template('manager.html', menu_items=menu_items)
 
-def create_order(user_id, total_price):
-    # Get the cart items from the session
-    cart_items = session.get('cart', {})
+def get_customer_orders(manager_id):
+    # Connect to the database
+    conn = sqlite3.connect(DATABASE_NAME)
+    cursor = conn.cursor()
 
-    # Save the order to the database
-    save_order_to_database(user_id, cart_items, total_price)
+    # Fetch customer orders from the database for the given manager ID
+    cursor.execute('''
+        SELECT orders.id AS order_id, users.username AS customer_username,
+               orders.total_price, orders.order_date
+        FROM orders
+        JOIN users ON orders.user_id = users.id
+        WHERE orders.manager_id = ?
+        ORDER BY orders.order_date DESC
+    ''', (manager_id,))
+    orders = cursor.fetchall()
 
-    # Clear the cart
-    clear_cart()
+    # Close the connection
+    conn.close()
 
-    # Optionally, you can notify the manager about the new order
-    notify_manager()
+    return orders
 
-    # Redirect the user to a confirmation page
-    return redirect(url_for('order_confirmation'))
+def create_order(user_id, manager_id, total_price):
+    conn = sqlite3.connect(DATABASE_NAME)
+    cursor = conn.cursor()
+
+    # Insert the order record into the database
+    cursor.execute('INSERT INTO orders (user_id, total_price, order_date) VALUES (?, ?, ?)',
+                   (user_id, total_price, datetime.datetime.now()))
+
+    # Get the ID of the last inserted row (the new order ID)
+    order_id = cursor.lastrowid
+
+    # Fetch cart items for the user from the database
+    cursor.execute('SELECT item_id, quantity FROM carts WHERE user_id = ?', (user_id,))
+    cart_items = cursor.fetchall()
+
+    # Insert the cart items into the order_items table
+    for cart_item in cart_items:
+        cursor.execute('INSERT INTO order_items (order_id, item_id, price, quantity) VALUES (?, ?, ?, ?)',
+                       (order_id, cart_item[0], get_item_price(cart_item[0]), cart_item[1]))
+
+        # Update the menu_items table to reduce the quantity of the item
+        cursor.execute('UPDATE menu_items SET quantity = quantity - ? WHERE id = ?', (cart_item[1], cart_item[0]))
+
+    # Delete the items from the user's cart
+    cursor.execute('DELETE FROM carts WHERE user_id = ?', (user_id,))
+
+    # Commit changes and close the connection
+    conn.commit()
+    conn.close()
+
+def get_item_price(item_id):
+    conn = sqlite3.connect(DATABASE_NAME)
+    cursor = conn.cursor()
+
+    # Retrieve the price of the menu item from the database
+    cursor.execute('SELECT price FROM menu_items WHERE id = ?', (item_id,))
+    price = cursor.fetchone()[0]
+
+    # Close the connection
+    conn.close()
+
+    return price
+
 
 @app.route('/place_order', methods=['POST'])
 def place_order():
+    manager_id = session.get('manager_id')
     if 'cart' not in session or not session['cart']:
         flash("Your cart is empty. Add items before placing an order.")
         return redirect(url_for('view_menu'))
@@ -252,15 +300,19 @@ def place_order():
     # Calculate the total price of items in the cart
     total_price = sum(item['price'] * item['quantity'] for item in session['cart'].values())
 
+    # Get the user_id of the user who is placing the order
+    user_id = None
+    if 'user_id' in session:
+        user_id = session['user_id']  # Replace 'user_id' with the actual key used to store the user ID in the session
+
     # Create an order record in the database
-    user_id = 1  # Replace this with the actual user ID once you have user authentication
     create_order(user_id, total_price)
 
     # Update the inventory quantities and remove items from the cart
     for item_name, cart_item in session['cart'].items():
         quantity = cart_item['quantity']
         update_menu_item_quantity(item_name, quantity)
-        remove_from_cart(item_name)
+        remove_from_cart(user_id, item_name)
 
     # Clear the cart in the session
     session['cart'] = {}
@@ -268,18 +320,15 @@ def place_order():
     flash("Order placed successfully. Thank you for shopping with us!")
     return redirect(url_for('view_menu'))
 
-def notify_manager():
-    # This function could add a notification message to be displayed to the manager
-    flash("New order placed. Check the orders dashboard.")
 
-def save_order_to_database(user_id, cart_items, total_price):
+def save_order_to_database(user_id, manager_id, cart_items, total_price):
     # Connect to the database
     conn = sqlite3.connect(DATABASE_NAME)
     cursor = conn.cursor()
 
     # Insert the order details into the orders table
-    cursor.execute('INSERT INTO orders (user_id, total_price, order_date) VALUES (?, ?, ?)',
-                   (user_id, total_price, datetime.datetime.now()))
+    cursor.execute('INSERT INTO orders (user_id, manager_id, total_price, order_date) VALUES (?, ?, ?, ?)',
+                   (user_id, manager_id, total_price, datetime.datetime.now()))
 
     # Get the ID of the last inserted row (the new order ID)
     order_id = cursor.lastrowid
@@ -288,6 +337,11 @@ def save_order_to_database(user_id, cart_items, total_price):
     for item_name, item_data in cart_items.items():
         cursor.execute('INSERT INTO order_items (order_id, item_name, price, quantity) VALUES (?, ?, ?, ?)',
                        (order_id, item_name, item_data['price'], item_data['quantity']))
+
+    # Remove the items from the user's cart
+    for item_name in cart_items.keys():
+        remove_from_cart(user_id, item_name)
+        
 
     # Commit changes and close the connection
     conn.commit()
@@ -325,6 +379,23 @@ def manager():
 
     return render_template('manager.html')
 
+@app.route('/manager/orders')
+def manager_orders():
+    conn = sqlite3.connect(DATABASE_NAME)
+    cursor = conn.cursor()
+
+    # Retrieve all customer orders from the database
+    cursor.execute('''
+        SELECT orders.id, users.username, orders.total_price, orders.order_date
+        FROM orders
+        JOIN users ON orders.user_id = users.id
+    ''')
+    orders = cursor.fetchall()
+
+    # Close the connection
+    conn.close()
+
+    return render_template('manager_orders.html', orders=orders)
 
 @app.route('/clear_inventory', methods=['POST'])
 def clear_inventory():

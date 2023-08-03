@@ -6,6 +6,10 @@
 <body>
     <h1>Manager Interface</h1>
     {% include 'navbar.html' %}
+    <ul>
+        <li><a href="{{ url_for('manager_orders') }}">Customer Orders</a></li>
+    </ul>    
+
 
     <h2>Add New Item</h2>
     <form method="post">
