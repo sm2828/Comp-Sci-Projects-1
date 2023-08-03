@@ -14,47 +14,38 @@ Clone the project repository to your local machine.
 
 (Optional but Recommended) Create a virtual environment in the project directory:
 
-bash
-Copy code
 # If using virtualenv
 virtualenv flaskenv
 
 # If using venv (Python 3.3+)
 python3 -m venv flaskenv
+
+
 Activate the virtual environment:
 
 On Windows:
-
-bash
-Copy code
 flaskenv\Scripts\activate
+
 On macOS/Linux:
-
-bash
-Copy code
 source flaskenv/bin/activate
-Install the project dependencies (Flask and SQLite3):
 
-bash
-Copy code
+Install the project dependencies (Flask and SQLite3):
 pip install flask
+
+
 Running the Application
 Ensure that the virtual environment is activated.
 
 In the project root directory, run the following command:
-
-bash
-Copy code
 python app.py
-The Flask development server will start, and you should see output similar to the following:
 
-bash
-Copy code
+The Flask development server will start, and you should see output similar to the following:
 * Serving Flask app 'app'
 * Debug mode: on
 WARNING: This is a development server. Do not use it in a production deployment.
 Use a production WSGI server instead.
 * Running on http://127.0.0.1:5000/
+
 Open your web browser and go to http://127.0.0.1:5000/ to access the home page of the Coffee Shop application.
 
 Usage
