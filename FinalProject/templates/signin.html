@@ -7,14 +7,12 @@
 </head>
 <body>
     <h1>Sign In</h1>
-    <form method="POST" action="/signin">
+    <form method="post" action="{{ url_for('sign_in') }}">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
+        <input type="text" id="username" name="username" required><br>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <input type="submit" value="Sign In">
+        <input type="password" id="password" name="password" required><br>
+        <button type="submit">Sign In</button>
     </form>
 </body>
 </html>

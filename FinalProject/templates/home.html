@@ -12,5 +12,12 @@
     <br>
     <a href="{{ url_for('sign_up') }}" class="signup-button">Sign Up</a>
     <a href="{{ url_for('sign_in') }}" class="signin-button">Sign In</a>
+    
+    {% if 'username' in session and session['username'] == 'SeanManager' %}
+        <a href="{{ url_for('manager') }}" class="manager-button">Manager Page</a>
+        <br>
+    {% endif %}
+    <a href="{{ url_for('sign_out') }}" class="signout-button">Sign Out</a>
+
 </body>
 </html>

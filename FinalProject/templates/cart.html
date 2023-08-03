@@ -6,27 +6,28 @@
     <title>Shopping Cart</title>
 </head>
 <body>
-    <h1>Your Shopping Cart</h1>
+    {% include 'navbar.html' %}
+    <h1>Shopping Cart</h1>
     <table>
         <tr>
             <th>Item</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Subtotal</th>
         </tr>
-        {% for item_key, item_data in cart.items() %}
+        {% for item_key, item in cart.items() %}
             <tr>
-                <td>{{ item_data['name'] }}</td>
-                <td>${{ item_data['price'] }}</td>
-                <td>{{ item_data['quantity'] }}</td>
-                <td>${{ item_data['price'] * item_data['quantity'] }}</td>
+                <td>{{ item['name'] }}</td>
+                <td>${{ item['price'] }}</td>
+                <td>{{ item['quantity'] }}</td>
             </tr>
         {% endfor %}
         <tr>
-            <td colspan="3" align="right">Total Price:</td>
-            <td>${{ total_price }}</td>
+            <th>Total Price:</th>
+            <td colspan="2">${{ total_price }}</td>
         </tr>
     </table>
-    <a href="{{ url_for('view_menu') }}">Back to Menu</a>
+    <form method="post" action="{{ url_for('clear_cart') }}">
+        <button type="submit">Clear Cart</button>
+    </form>
 </body>
 </html>

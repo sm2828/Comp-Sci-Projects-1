@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coffee Shop Menu</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
+    {% include 'navbar.html' %}
     <h1>Coffee Shop Menu</h1>
     <table>
         <tr>
@@ -14,45 +18,103 @@
             <th>Quantity</th>
             <th>Add to Cart</th>
         </tr>
-        {% for item_key, item_data in menu.items() %}
-            <form action="{{ url_for('add_to_cart') }}" method="post">
-                <tr>
-                    <td>{{ item_data['name'] }}</td>
-                    <td>${{ item_data['price'] }}</td>
-                    <td>{{ item_data['quantity'] }}</td>
-                    <td>
-                        <input type="hidden" name="item_name" value="{{ item_key }}">
-                        <input type="hidden" name="item_price" value="{{ item_data['price'] }}">
-                        <input type="number" name="quantity" min="1" value="1">
-                        <input type="submit" value="Add to Cart">
-                    </td>
-                </tr>
-            </form>
+        {% for item in menu %}
+        <tr>
+            <td>{{ item['name'] }}</td>
+            <td>${{ item['price'] }}</td>
+            <td>{{ item['quantity'] }}</td>
+            <td>
+                <!-- Update the name attributes to "item_name" and "item_price" -->
+                <form class="add-to-cart-form">
+                    <input type="hidden" name="item_name" value="{{ item['name'] }}">
+                    <input type="hidden" name="item_price" value="{{ item['price'] }}">
+                    <input type="hidden" name="item_id" value="{{ item['id'] }}">
+                    <input type="number" name="quantity" value="1" min="1">
+                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                    <button type="button" class="add-to-cart-button" data-item-id="{{ item['id'] }}">Add</button>
+                </form>
+            </td>
+        </tr>
         {% endfor %}
     </table>
-
     <h2>Shopping Cart</h2>
-    <table>
+    <table id="cart-table">
         <tr>
             <th>Item</th>
             <th>Price</th>
             <th>Quantity</th>
         </tr>
-        {% for item_key, item_data in cart.items() %}
-            <tr>
-                <td>{{ item_data['name'] }}</td>
-                <td>${{ item_data['price'] }}</td>
-                <td>{{ item_data['quantity'] }}</td>
-            </tr>
+        {% for item_key, item in cart.items() %}
+        <tr>
+            <td>{{ item['name'] }}</td>
+            <td>${{ item['price'] }}</td>
+            <td>{{ item['quantity'] }}</td>
+        </tr>
         {% endfor %}
         <tr>
-            <td colspan="2">Total Price:</td>
-            <td>${{ total_price }}</td>
+            <th>Total Price:</th>
+            <td colspan="2">${{ total_price }}</td>
         </tr>
     </table>
-
-    <form action="{{ url_for('clear_cart') }}" method="post">
-        <input type="submit" value="Clear Cart">
+    <form method="post" action="{{ url_for('place_order') }}">
+        <button type="submit">Place Order</button>
     </form>
-</body>
+    <form method="post" action="{{ url_for('clear_cart') }}">
+        <button type="submit">Clear Cart</button>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $(".add-to-cart-button").click(function () {
+                var form = $(this).closest(".add-to-cart-form");
+                var formData = form.serialize();
+    
+                // Extract the item_id from the data-item-id attribute
+                var itemId = $(this).data("item-id");
+                formData += "&item_id=" + itemId;
+    
+                $.ajax({
+                    url: "{{ url_for('add_to_cart') }}",
+                    method: "POST",
+                    data: formData,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            // Update the cart table with the new data
+                            var cartTable = $("#cart-table");
+                            cartTable.find("tr:gt(0)").remove(); // Clear existing rows
+    
+                            // Check if cart is not empty before updating
+                            if (response.cart.length > 0) {
+                                $.each(response.cart, function (_, item) {
+                                    var newRow = $("<tr>");
+                                    newRow.append("<td>" + item.name + "</td>");
+                                    newRow.append("<td>$" + item.price + "</td>");
+                                    newRow.append("<td>" + item.quantity + "</td>");
+                                    cartTable.append(newRow);
+                                });
+                            } else {
+                                // If cart is empty, show a message in a new row
+                                var emptyRow = $("<tr>");
+                                emptyRow.append("<td colspan='3'>Your cart is empty.</td>");
+                                cartTable.append(emptyRow);
+                            }
+    
+                            // Update total price
+                            var totalPriceRow = $("<tr>");
+                            totalPriceRow.append("<th>Total Price:</th>");
+                            totalPriceRow.append("<td colspan='2'>$" + response.total_price + "</td>");
+                            cartTable.append(totalPriceRow);
+                        }
+                        alert(response.message);
+                    },
+                    error: function () {
+                        alert("An error occurred while adding the item to the cart.");
+                    }
+                });
+            });
+        });
+    </script>
+    </body>
+
 </html>

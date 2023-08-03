@@ -1,0 +1,15 @@
+<!-- navbar.html -->
+<nav>
+    <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('view_menu') }}">Menu</a></li>
+        {# Check if the username is in the session #}
+        {% if 'username' in session %}
+            <li>Hello, {{ session['username'] }}</li>
+            <li><a href="{{ url_for('sign_out') }}">Sign Out</a></li>
+        {% else %}
+            <li><a href="{{ url_for('sign_in') }}">Sign In</a></li>
+            <li><a href="{{ url_for('sign_up') }}">Sign Up</a></li>
+        {% endif %}
+    </ul>
+</nav>

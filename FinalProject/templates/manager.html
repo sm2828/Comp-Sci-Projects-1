@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manager Interface</title>
+</head>
+<body>
+    <h1>Manager Interface</h1>
+    {% include 'navbar.html' %}
+
+    <h2>Add New Item</h2>
+    <form method="post">
+        <label for="name">Item Name:</label>
+        <input type="text" name="name" required><br>
+
+        <label for="category">Category:</label>
+        <input type="text" name="category" required><br>
+
+        <label for="price">Price:</label>
+        <input type="number" step="0.01" name="price" required><br>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" required><br>
+
+        <input type="submit" name="add_item" value="Add Item">
+    </form>
+
+    <h2>Update Item Quantity</h2>
+    <form method="post">
+        <label for="name">Item Name:</label>
+        <input type="text" name="name" required><br>
+
+        <label for="quantity">New Quantity:</label>
+        <input type="number" name="quantity" required><br>
+
+        <input type="submit" name="update_quantity" value="Update Quantity">
+    </form>
+
+    <h2>Menu Items</h2>
+    <table>
+        <tr>
+            <th>Item Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Quantity</th>
+        </tr>
+        {% for item in menu_items %}
+            <tr>
+                <td>{{ item['name'] }}</td>
+                <td>{{ item['category'] }}</td>
+                <td>${{ item['price'] }}</td>
+                <td>{{ item['quantity'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <form method="post" action="{{ url_for('clear_inventory') }}">
+        <button type="submit">Clear Inventory</button>
+    </form>
+    </body>
+</html>
