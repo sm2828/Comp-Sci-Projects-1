@@ -1,4 +1,4 @@
-Welcome to myrepo
+Welcome to myrepo:
 This is the repository for various coding projects and assignments. This repository serves as a collection of different coding projects and assignments related to Computer Science.
 
 FinalProject: Contains the files for the final project.
@@ -9,10 +9,10 @@ lab02: Lab02 files and updates.
 lab03: Lab03 files and updates.
 lab05: Lab05 updates and enhancements.
 
-Contact
+Contact:
 Feel free to reach out for any questions or collaboration opportunities related to the projects.
 
-Getting Started
+Getting Started:
 If you're interested in any of the projects or assignments in this repository, check out the respective folders. Each folder contains the necessary files and instructions to get started.
 
 Thank you for checking out this repository!
