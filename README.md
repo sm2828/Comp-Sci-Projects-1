@@ -2,13 +2,13 @@ Welcome to myrepo
 This is the repository for various coding projects and assignments. This repository serves as a collection of different coding projects and assignments related to Computer Science.
 
 Repository Structure
-FinalProject: 
-Lab06: 
-Lab07:  
-Lab08:  
-lab02:  
-lab03: 
-lab05:  
+FinalProject
+Lab06 
+Lab07
+Lab08
+lab02
+lab03
+lab05
 
 Contact
 Feel free to reach out for any questions or collaboration opportunities related to the projects.
@@ -18,8 +18,4 @@ If you're interested in any of the projects or assignments in this repository, c
 
 Thank you for checking out this repository!
 
-Feel free to tailor this to your liking and make any additional edits you need. If you have any other requests or details to add, just let me know! 😊
-
-
-
-
+Feel free to tailor this to your liking and make any additional edits you need. If you have any other requests or details to add, just let me know!
